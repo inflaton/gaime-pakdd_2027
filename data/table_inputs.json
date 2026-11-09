@@ -1,0 +1,409 @@
+{
+  "benchmark_rows": [
+    {
+      "arm": "PROD",
+      "configuration": "120B production",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        3.53,
+        7.84
+      ]
+    },
+    {
+      "arm": "T1",
+      "configuration": "T1 bf16, thinking off",
+      "companion_predictions": true
+    },
+    {
+      "arm": "T1_think",
+      "configuration": "T1 bf16, thinking on",
+      "archived_recall_ci95_pp": [
+        6.66,
+        10.54
+      ]
+    },
+    {
+      "arm": "null_only",
+      "configuration": "T1, think after null (replay)"
+    },
+    {
+      "arm": "T1_fp8",
+      "configuration": "T1 fp8",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        -0.49,
+        1.16
+      ]
+    },
+    {
+      "arm": "T1_nvfp4",
+      "configuration": "T1 NVFP4",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        3.68,
+        6.81
+      ]
+    },
+    {
+      "arm": "T1_w4a16",
+      "configuration": "T1 W4A16",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        0.5,
+        2.52
+      ]
+    },
+    {
+      "arm": "T1_27B",
+      "configuration": "27B student, thinking off",
+      "archived_recall_ci95_pp": [
+        -3.31,
+        0.5
+      ]
+    },
+    {
+      "arm": "T1_27B_think",
+      "configuration": "27B student, thinking low",
+      "archived_recall_ci95_pp": [
+        5.74,
+        9.63
+      ]
+    }
+  ],
+  "fresh": {
+    "rows": [
+      {
+        "arm": "T1",
+        "configuration": "T1 bf16, thinking off",
+        "companion_predictions": true
+      },
+      {
+        "arm": "T1_think",
+        "configuration": "T1 bf16, thinking on",
+        "archived_recall_ci95_pp": [
+          4.82,
+          11.35
+        ]
+      },
+      {
+        "arm": "null_only",
+        "configuration": "T1, think after null (replay)"
+      },
+      {
+        "arm": "T1_fp8",
+        "configuration": "T1 fp8",
+        "companion_predictions": true,
+        "archived_recall_ci95_pp": [
+          -0.72,
+          3.16
+        ]
+      },
+      {
+        "arm": "T1_nvfp4",
+        "configuration": "T1 NVFP4",
+        "companion_predictions": true,
+        "archived_recall_ci95_pp": [
+          -2.17,
+          3.14
+        ]
+      },
+      {
+        "arm": "T1_w4a16",
+        "configuration": "T1 W4A16",
+        "companion_predictions": true,
+        "archived_recall_ci95_pp": [
+          -0.46,
+          3.38
+        ]
+      },
+      {
+        "arm": "A42",
+        "configuration": "A42 (seed matched)",
+        "archived_recall_ci95_pp": [
+          -9.17,
+          -3.31
+        ]
+      },
+      {
+        "arm": "A43",
+        "configuration": "A43 (cross-seed)",
+        "archived_recall_ci95_pp": [
+          -12.33,
+          -6.0
+        ]
+      }
+    ],
+    "outcomes": {
+      "T1_fp8": {
+        "CM": 367,
+        "WC": 1,
+        "SM": 0,
+        "MM": 66
+      },
+      "T1_nvfp4": {
+        "CM": 364,
+        "WC": 1,
+        "SM": 0,
+        "MM": 69
+      },
+      "T1_w4a16": {
+        "CM": 368,
+        "WC": 3,
+        "SM": 0,
+        "MM": 63
+      },
+      "A42": {
+        "CM": 335,
+        "WC": 0,
+        "SM": 0,
+        "MM": 99
+      },
+      "A43": {
+        "CM": 322,
+        "WC": 1,
+        "SM": 0,
+        "MM": 111
+      }
+    }
+  },
+  "pilot": {
+    "rows": [
+      {
+        "configuration": "bf16, seed 42",
+        "pairs": [
+          {
+            "augmented": "A42",
+            "baseline": "T1"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          1.99,
+          5.13
+        ],
+        "archived_f05_ci95_pp": [
+          -0.4,
+          1.04
+        ]
+      },
+      {
+        "configuration": "bf16, seed 43",
+        "pairs": [
+          {
+            "augmented": "A43",
+            "baseline": "T1s43"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          -0.39,
+          2.82
+        ],
+        "archived_f05_ci95_pp": [
+          -0.73,
+          0.64
+        ]
+      },
+      {
+        "configuration": "bf16, two-seed mean",
+        "pairs": [
+          {
+            "augmented": "A42",
+            "baseline": "T1"
+          },
+          {
+            "augmented": "A43",
+            "baseline": "T1s43"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          1.16,
+          3.59
+        ],
+        "archived_f05_ci95_pp": [
+          -0.34,
+          0.63
+        ]
+      },
+      {
+        "configuration": "fp8, seed 42",
+        "pairs": [
+          {
+            "augmented": "A42_fp8",
+            "baseline": "T1_fp8"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          2.41,
+          5.63
+        ],
+        "archived_f05_ci95_pp": [
+          -0.55,
+          1.03
+        ]
+      },
+      {
+        "configuration": "NVFP4, seed 42",
+        "pairs": [
+          {
+            "augmented": "A42_nvfp4",
+            "baseline": "T1_nvfp4"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          -1.17,
+          1.19
+        ],
+        "archived_f05_ci95_pp": [
+          -0.94,
+          0.25
+        ]
+      },
+      {
+        "configuration": "W4A16, seed 42",
+        "pairs": [
+          {
+            "augmented": "A42_w4a16",
+            "baseline": "T1_w4a16"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          -1.59,
+          1.52
+        ],
+        "archived_f05_ci95_pp": [
+          -1.08,
+          0.24
+        ]
+      },
+      {
+        "configuration": "Thinking, seed 42",
+        "pairs": [
+          {
+            "augmented": "A42_think",
+            "baseline": "T1_think"
+          }
+        ],
+        "archived_recall_ci95_pp": [
+          -1.02,
+          1.19
+        ],
+        "archived_f05_ci95_pp": [
+          -1.91,
+          -0.08
+        ]
+      }
+    ],
+    "outcomes": {
+      "A42": {
+        "CM": 912,
+        "WC": 6,
+        "SM": 14,
+        "MM": 92
+      },
+      "A42_fp8": {
+        "CM": 920,
+        "WC": 7,
+        "SM": 14,
+        "MM": 83
+      },
+      "A42_nvfp4": {
+        "CM": 929,
+        "WC": 6,
+        "SM": 18,
+        "MM": 75
+      },
+      "A42_think": {
+        "CM": 964,
+        "WC": 8,
+        "SM": 33,
+        "MM": 38
+      },
+      "A42_w4a16": {
+        "CM": 891,
+        "WC": 5,
+        "SM": 13,
+        "MM": 114
+      },
+      "A43": {
+        "CM": 857,
+        "WC": 4,
+        "SM": 11,
+        "MM": 149
+      },
+      "T1s43": {
+        "CM": 845,
+        "WC": 1,
+        "SM": 10,
+        "MM": 164
+      }
+    }
+  },
+  "serving": {
+    "rows": [
+      {
+        "arm": "T1",
+        "configuration": "T1 bf16, thinking off",
+        "common_workload_arm": "T1",
+        "archived_steady_harness_rows_per_hour": 2085.2,
+        "harness_from_companion": true
+      },
+      {
+        "arm": "T1_think",
+        "configuration": "T1 bf16, thinking on",
+        "common_workload_arm": "T1_think",
+        "evaluation_workload": "retrospective_full",
+        "archived_evaluation_totals": {
+          "rows": 1990,
+          "minutes": 601.78
+        }
+      },
+      {
+        "arm": "T1_think",
+        "configuration": "T1 bf16, thinking on (fresh)",
+        "evaluation_workload": "fresh_all"
+      },
+      {
+        "arm": "T1_fp8",
+        "configuration": "T1 fp8",
+        "common_workload_arm": "T1_fp8",
+        "archived_steady_harness_rows_per_hour": 2788.7,
+        "harness_from_companion": true
+      },
+      {
+        "arm": "T1_nvfp4",
+        "configuration": "T1 NVFP4",
+        "common_workload_arm": "T1_nvfp4",
+        "archived_steady_harness_rows_per_hour": 2818.9,
+        "harness_from_companion": true
+      },
+      {
+        "arm": "T1_w4a16",
+        "configuration": "T1 W4A16",
+        "archived_steady_harness_rows_per_hour": 2469.9,
+        "harness_from_companion": true
+      },
+      {
+        "arm": "T1_27B",
+        "configuration": "27B student, thinking off",
+        "archived_steady_harness_rows_per_hour": 1163.5
+      },
+      {
+        "arm": "T1_27B_think",
+        "configuration": "27B student, thinking low",
+        "evaluation_workload": "retrospective_full",
+        "archived_evaluation_totals": {
+          "rows": 1990,
+          "minutes": 898.1
+        }
+      }
+    ],
+    "archived_weights_gib": {
+      "T1": 22.89,
+      "T1_think": 22.89,
+      "T1_fp8": 12.95,
+      "T1_nvfp4": 8.29,
+      "T1_w4a16": 7.81,
+      "T1_27B": 51.23,
+      "T1_27B_think": 51.23
+    }
+  }
+}

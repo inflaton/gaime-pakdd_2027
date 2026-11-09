@@ -1,0 +1,262 @@
+{
+  "T1_think": {
+    "pos": {
+      "correct": {
+        "correct": 865,
+        "wrong": 1,
+        "null": 10,
+        "gate": 0,
+        "failure": 0
+      },
+      "wrong": {
+        "correct": 4,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "correct": 94,
+        "wrong": 1,
+        "null": 34,
+        "gate": 1,
+        "failure": 0
+      },
+      "gate": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    },
+    "neg": {
+      "spurious": {
+        "spurious": 8,
+        "null": 0,
+        "gate": 0,
+        "failure": 1
+      },
+      "null": {
+        "spurious": 18,
+        "null": 513,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    }
+  },
+  "T1_fp8": {
+    "pos": {
+      "correct": {
+        "correct": 869,
+        "wrong": 0,
+        "null": 7,
+        "gate": 0,
+        "failure": 0
+      },
+      "wrong": {
+        "correct": 1,
+        "wrong": 3,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "correct": 9,
+        "wrong": 0,
+        "null": 121,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    },
+    "neg": {
+      "spurious": {
+        "spurious": 9,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "spurious": 0,
+        "null": 531,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    }
+  },
+  "T1_nvfp4": {
+    "pos": {
+      "correct": {
+        "correct": 870,
+        "wrong": 1,
+        "null": 5,
+        "gate": 0,
+        "failure": 0
+      },
+      "wrong": {
+        "correct": 1,
+        "wrong": 3,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "correct": 58,
+        "wrong": 0,
+        "null": 71,
+        "gate": 1,
+        "failure": 0
+      },
+      "gate": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    },
+    "neg": {
+      "spurious": {
+        "spurious": 9,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "spurious": 7,
+        "null": 524,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    }
+  },
+  "T1_w4a16": {
+    "pos": {
+      "correct": {
+        "correct": 870,
+        "wrong": 0,
+        "null": 6,
+        "gate": 0,
+        "failure": 0
+      },
+      "wrong": {
+        "correct": 0,
+        "wrong": 4,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "correct": 21,
+        "wrong": 0,
+        "null": 109,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "correct": 0,
+        "wrong": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    },
+    "neg": {
+      "spurious": {
+        "spurious": 9,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "null": {
+        "spurious": 0,
+        "null": 531,
+        "gate": 0,
+        "failure": 0
+      },
+      "gate": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      },
+      "failure": {
+        "spurious": 0,
+        "null": 0,
+        "gate": 0,
+        "failure": 0
+      }
+    }
+  }
+}

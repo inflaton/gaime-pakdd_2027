@@ -1,0 +1,496 @@
+{
+  "fresh": {
+    "cohort": {
+      "n_total": 1000,
+      "n_pos": 434,
+      "n_neg": 357,
+      "n_resolved": 791,
+      "n_unresolved": 209
+    },
+    "bootstrap": {
+      "seed": 42,
+      "resamples": 4000,
+      "level": 95
+    },
+    "arms": {
+      "T1": {
+        "all1000": {
+          "rows": 1000,
+          "null": 626
+        },
+        "counts": {
+          "n_pos": 434,
+          "n_neg": 357,
+          "pos": {
+            "correct": 362,
+            "wrong": 2,
+            "null": 70,
+            "gate_name": 0,
+            "gate_conf": 0,
+            "gate_loc": 0,
+            "failure_trunc": 0,
+            "failure_error": 0,
+            "failure_parse": 0
+          },
+          "neg": {
+            "spurious": 0,
+            "null": 357,
+            "gate_name": 0,
+            "gate_conf": 0,
+            "gate_loc": 0,
+            "failure_trunc": 0,
+            "failure_error": 0,
+            "failure_parse": 0
+          }
+        },
+        "unresolved_selected": 9
+      },
+      "T1_think": {
+        "all1000": {
+          "rows": 1000,
+          "null": 571
+        },
+        "counts": {
+          "n_pos": 434,
+          "n_neg": 357,
+          "pos": {
+            "correct": 397,
+            "wrong": 1,
+            "null": 35,
+            "gate_name": 0,
+            "gate_conf": 1,
+            "gate_loc": 0,
+            "failure_trunc": 0,
+            "failure_error": 0,
+            "failure_parse": 0
+          },
+          "neg": {
+            "spurious": 0,
+            "null": 356,
+            "gate_name": 0,
+            "gate_conf": 1,
+            "gate_loc": 0,
+            "failure_trunc": 0,
+            "failure_error": 0,
+            "failure_parse": 0
+          }
+        },
+        "unresolved_selected": 28
+      }
+    },
+    "contrasts": {
+      "think_vs_off": {
+        "base": "T1",
+        "variant": "T1_think",
+        "transitions": {
+          "pos_crosstab_base_to_variant": {
+            "correct": {
+              "correct": 353,
+              "wrong": 0,
+              "null": 9,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "wrong": {
+              "correct": 2,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "null": {
+              "correct": 42,
+              "wrong": 1,
+              "null": 26,
+              "gate_name": 0,
+              "gate_conf": 1,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_name": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_conf": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_loc": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_trunc": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_error": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_parse": {
+              "correct": 0,
+              "wrong": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            }
+          },
+          "neg_crosstab_base_to_variant": {
+            "spurious": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "null": {
+              "spurious": 0,
+              "null": 356,
+              "gate_name": 0,
+              "gate_conf": 1,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_name": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_conf": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "gate_loc": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_trunc": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_error": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            },
+            "failure_parse": {
+              "spurious": 0,
+              "null": 0,
+              "gate_name": 0,
+              "gate_conf": 0,
+              "gate_loc": 0,
+              "failure_trunc": 0,
+              "failure_error": 0,
+              "failure_parse": 0
+            }
+          }
+        },
+        "agreement_pct": {
+          "unresolved": 88.52,
+          "unresolved_base_selects_variant_not": 2,
+          "unresolved_variant_selects_base_not": 21
+        }
+      }
+    }
+  },
+  "benchmark": {
+    "cascade_benchmark": {
+      "metrics": {
+        "P": 96.81,
+        "R_m": 96.04,
+        "N-FMR": 5.0,
+        "F0.5": 96.65
+      },
+      "SM": 27,
+      "vs_T1": {
+        "delta": {
+          "P": -1.73,
+          "R_m": 9.31,
+          "N-FMR": 3.33,
+          "F0.5": 0.73
+        },
+        "ci": {
+          "P": [
+            -2.6,
+            -0.91
+          ],
+          "R_m": [
+            7.5,
+            11.1
+          ],
+          "N-FMR": [
+            1.87,
+            4.88
+          ],
+          "F0.5": [
+            -0.07,
+            1.51
+          ]
+        }
+      },
+      "n_routed": 661
+    },
+    "benchmark_quality_timing": {
+      "n": 2000,
+      "concurrency": 16,
+      "arms": {
+        "T1": {
+          "estimated_rows_per_hour": 1713.85
+        },
+        "T1_fp8": {
+          "estimated_rows_per_hour": 2265.53
+        },
+        "T1_nvfp4": {
+          "estimated_rows_per_hour": 1996.78
+        },
+        "T1_think": {
+          "estimated_rows_per_hour": 199.9
+        }
+      }
+    },
+    "cohort": {
+      "n": 1550,
+      "n_pos": 1010,
+      "n_neg": 540
+    },
+    "outcomes": {
+      "PROD": {
+        "CM": 933,
+        "WC": 10,
+        "SM": 71,
+        "MM": 67,
+        "metrics": {
+          "P": 92.01,
+          "R_m": 92.38,
+          "N-FMR": 13.15,
+          "F0.5": 92.08
+        }
+      },
+      "T1": {
+        "CM": 876,
+        "WC": 4,
+        "SM": 9,
+        "MM": 130,
+        "metrics": {
+          "P": 98.54,
+          "R_m": 86.73,
+          "N-FMR": 1.67,
+          "F0.5": 95.93
+        }
+      },
+      "T1_think": {
+        "CM": 963,
+        "WC": 2,
+        "SM": 26,
+        "MM": 45,
+        "metrics": {
+          "P": 97.17,
+          "R_m": 95.35,
+          "N-FMR": 4.81,
+          "F0.5": 96.8
+        }
+      },
+      "T1_fp8": {
+        "CM": 879,
+        "WC": 3,
+        "SM": 9,
+        "MM": 128,
+        "metrics": {
+          "P": 98.65,
+          "R_m": 87.03,
+          "N-FMR": 1.67,
+          "F0.5": 96.09
+        }
+      },
+      "T1_nvfp4": {
+        "CM": 929,
+        "WC": 4,
+        "SM": 16,
+        "MM": 77,
+        "metrics": {
+          "P": 97.89,
+          "R_m": 91.98,
+          "N-FMR": 2.96,
+          "F0.5": 96.65
+        }
+      },
+      "T1_w4a16": {
+        "CM": 891,
+        "WC": 4,
+        "SM": 9,
+        "MM": 115,
+        "metrics": {
+          "P": 98.56,
+          "R_m": 88.22,
+          "N-FMR": 1.67,
+          "F0.5": 96.3
+        }
+      },
+      "T1_27B": {
+        "CM": 862,
+        "WC": 2,
+        "SM": 6,
+        "MM": 146,
+        "metrics": {
+          "P": 99.08,
+          "R_m": 85.35,
+          "N-FMR": 1.11,
+          "F0.5": 95.99
+        }
+      },
+      "T1_27B_think": {
+        "CM": 954,
+        "WC": 5,
+        "SM": 21,
+        "MM": 51,
+        "metrics": {
+          "P": 97.35,
+          "R_m": 94.46,
+          "N-FMR": 3.89,
+          "F0.5": 96.75
+        }
+      },
+      "null_only": {
+        "CM": 970,
+        "WC": 5,
+        "SM": 27,
+        "MM": 35,
+        "metrics": {
+          "P": 96.81,
+          "R_m": 96.04,
+          "N-FMR": 5.0,
+          "F0.5": 96.65
+        }
+      }
+    },
+    "first_pass_explicit_nulls": {
+      "pos": 130,
+      "neg": 531
+    }
+  },
+  "fresh_wall_clock": {
+    "rows": 990,
+    "minutes": 297
+  },
+  "companion": {
+    "full_student_recall": 83.97,
+    "fresh_full_student_recall": 77.42,
+    "full_qwen_recall": 95.09,
+    "eligible_queries": 8207,
+    "agreement_negative_errors": 41,
+    "agreement_errors": 45,
+    "calibration_examples": 64
+  },
+  "pilot": {
+    "counts": {
+      "train": {
+        "pos": 877,
+        "neg": 1673
+      },
+      "dev": {
+        "pos": 100,
+        "neg": 180
+      }
+    },
+    "shared_dev_examples": 150,
+    "config": {
+      "lora_alpha": 16,
+      "lora_dropout": 0.0,
+      "learning_rate": 0.0001,
+      "warmup_ratio": 0.1,
+      "cutoff_len": 10240,
+      "num_train_epochs": 1.0,
+      "per_device_train_batch_size": 1,
+      "logging_steps": 5,
+      "eval_steps": 50
+    },
+    "final_eval_loss": {
+      "T1": 0.004388255067169666,
+      "T1-X490": 0.003703827504068613,
+      "T1-s43": 0.004788337741047144,
+      "T1-X490-s43": 0.0047548445872962475
+    }
+  }
+}
