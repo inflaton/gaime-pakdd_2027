@@ -1,10 +1,11 @@
 # Merchant-resolution evaluation supplement
 
 This supplement documents the evaluation protocol and provides an offline analysis of
-aggregate outcomes for a local merchant-resolution judge. It reconstructs the null-only
-fallback on both evaluation cohorts, reproduces the fresh fallback's paired recall interval,
+aggregate outcomes for a local merchant-resolution judge. It reconstructs **T1 selective thinking (replay)** on both evaluation cohorts and reproduces
+its fresh paired recall interval,
 exports the four results tables, recomputes the recovery-overlap enrichment reference, summarizes
 linking on unresolved fresh queries, and regenerates the operating-point and training-loss figures.
+A native TikZ source and standalone wrapper render the selective-thinking routing diagram.
 
 ## Reproduce
 
@@ -33,7 +34,7 @@ python3 plot_figures.py --output-dir figures
 - `data/benchmark_transitions.json` contains paired outcomes for T1 with thinking off versus
   thinking on, fp8, NVFP4, and W4A16 on the retrospective evaluation subset.
 - `gen_replay_values.py` checks aggregate marginals, recomputes benchmark scores, applies the
-  fallback rule on both cohorts, and formats the resulting values for the manuscript.
+  selective-thinking rule on both cohorts, and formats the resulting values for the manuscript.
 - `replay_values.tex` is the expected output for the bundled inputs.
 - `export_tables.py` uses the replay inputs and `data/table_inputs.json` to write
   `benchmark.csv`, `fresh.csv`, `pilot.csv`, and `serving.csv`. Quality scores and point
@@ -49,10 +50,27 @@ python3 plot_figures.py --output-dir figures
   totals and unresolved rates against `data/review_summary.json`.
 - `pilot.csv` includes the two T1 seed baselines and the augmentation contrasts; the
   `row_kind` column distinguishes absolute scores from changes. `serving.csv` uses an explicit
-  basis column and the same common-workload timing for thinking off/on and fallback estimates.
+  basis column and the same common-workload timing for thinking off/on and selective-thinking estimates.
 - `plot_frontier.py` reads `data/frontier_inputs.json` for the directly labelled benchmark
   figure. `plot_figures.py` also reads `data/figure_inputs.json` to retain the supplementary
   training/validation loss curves for all four pilot runs.
+
+## Selective-thinking routing diagram
+
+`fig_selective_thinking.tex` is the native vector routing diagram. It separates the parsed
+explicit-null test from the acceptance gate and shows the retained first-pass path and
+the optional thinking-on path. To render it, use a LaTeX installation with TikZ and the
+`standalone` class:
+
+```sh
+mkdir -p figures
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=figures \
+  -jobname=fig_selective_thinking render_selective_thinking.tex
+```
+
+The output is `figures/fig_selective_thinking.pdf`. This is a policy diagram, not evidence
+of measured online routing performance. The two Python-generated figures remain
+`fig_frontier.pdf` and the supplementary `fig_pilot_losses.pdf`.
 
 ## Evaluation protocol
 
@@ -78,9 +96,13 @@ spurious selections on no-match queries. Recall is `CM / (CM + WC + MM)`, precis
 `CM / (CM + WC + SM)`, and the no-match false-match rate is `SM / n_neg`. The script reports
 these as percentages and computes F0.5, which weights precision more than recall.
 
-**Fallback replay.** The first pass is T1 with thinking off. The replay uses the paired
+**T1 selective thinking (replay).** The first pass is T1 with thinking off. The replay uses the paired
 thinking-on outcome only after an explicit parsed null. A selected candidate, gate rejection,
-or failed request keeps its first-pass outcome. Rows in the joint outcome tables denote
+or failed request keeps its first-pass outcome. Thus an accepted first-pass link is never
+replaced; a first-pass gate rejection or request failure stays an abstention. The route
+trigger is a parsed explicit null ID, not every downstream abstention. Both passes use
+the same checkpoint, query, candidate set, prompt and fixed acceptance gate; only the
+thinking mode changes. Rows in the joint outcome tables denote
 thinking off and columns denote the corresponding comparison configuration. `pos` and `neg`
 refer to the matchable and no-match reference classes. In the retrospective tables, `gate`
 groups rejections and `failure` groups failed requests and invalid verdicts. The script
@@ -92,13 +114,19 @@ checks the arm totals and applies the routing rule to the thinking comparison co
 |---|---:|---:|---:|---:|
 | Retrospective, thinking off | 86.73 | 4 | 9 | 0 / 1,550 |
 | Retrospective, always-on thinking | 95.35 | 2 | 26 | 1,550 / 1,550 |
-| Retrospective, null-only replay | 96.04 | 5 | 27 | 661 / 1,550 |
+| Retrospective, T1 selective thinking (replay) | 96.04 | 5 | 27 | 661 / 1,550 |
 | Fresh, thinking off | 83.41 | 2 | 0 | 0 / 1,000 |
 | Fresh, always-on thinking | 91.47 | 1 | 0 | 1,000 / 1,000 |
-| Fresh, null-only replay | 93.09 | 3 | 0 | 626 / 1,000 |
+| Fresh, T1 selective thinking (replay) | 93.09 | 3 | 0 | 626 / 1,000 |
+
+Among the reported T1 configurations, selective thinking has the highest observed recall
+on both cohorts; this is not a claim about every model or unreported configuration. On the
+benchmark its recall difference against always-on thinking is +0.69 percentage points
+(archived 95% paired interval 0.00 to +1.50), so this benchmark interval includes zero.
+Its F0.5 point estimate is slightly lower on both cohorts.
 
 The fresh routing denominator includes the unresolved queries. Recall and error counts use
-the resolved reference. The fresh fallback gains nine correct selections and loses two
+the resolved reference. Selective thinking on the fresh slice gains nine correct selections and loses two
 relative to always-on thinking, for a recall change of **+1.61 percentage points**.
 The interval **[+0.23, +3.13]** comes from 4,000 paired percentile resamples, using seed 42.
 Each draw resamples the 791 resolved queries from the grouped counts of matchable gains,
@@ -106,7 +134,7 @@ losses, ties, and no-match queries. This exploratory interval conditions on the 
 after inspecting the transitions. The prespecified fresh thinking-on versus thinking-off
 comparison has a different estimand and interval.
 
-The retrospective transition tables reproduce the benchmark fallback's 970 correct selections,
+The retrospective transition tables reproduce the benchmark selective-thinking replay's 970 correct selections,
 5 wrong candidates, and 27 spurious links. They also show that 58 of the 59 newly correct
 NVFP4 selections replaced an explicit null. The retrospective paired intervals come from the
 study's query-level analysis and are stored as reported.
@@ -160,7 +188,7 @@ request seconds`, assuming all worker slots stay busy. The archived bf16 rates a
 rows/hour with thinking off and 199.90 with thinking on, an estimated slowdown of 8.6×.
 The separate fresh wall-clock measurement covers 990 requests in 297 minutes after the
 smoke test, or approximately 200 rows/hour. These rates describe individual configurations.
-End-to-end throughput and queueing for the two-stage fallback remain to be measured.
+End-to-end throughput and queueing for the two-stage selective-thinking policy remain to be measured.
 
 The serving CSV places the focal configurations on one timing basis:
 
@@ -168,15 +196,16 @@ The serving CSV places the focal configurations on one timing basis:
 |---|---|---:|---:|
 | T1 bf16, off | Common-workload estimate | 1,714 | 0.58 |
 | T1 bf16, on | Common-workload estimate | 200 | 5.00 |
-| T1 null fallback, benchmark | Additive routing estimate | 368 | 2.72 |
-| T1 null fallback, full fresh | Additive routing estimate | 269 | 3.72 |
+| T1 selective thinking (replay), benchmark | Additive routing estimate | 368 | 2.72 |
+| T1 selective thinking (replay), full fresh | Additive routing estimate | 269 | 3.72 |
 | T1 fp8 | Common-workload estimate | 2,266 | 0.44 |
 | T1 NVFP4 | Common-workload estimate | 1,997 | 0.50 |
 
-The additive fallback model uses `1 / off_rate + routed_share / on_rate` hours per query,
+The additive selective-thinking model uses `1 / off_rate + routed_share / on_rate` hours per query,
 with first-pass shares 661/1,550 and 626/1,000. It assumes routed requests take the benchmark
 mean thinking duration. The resulting occupied-slot estimates are 54.3% and 74.3% of
-always-on thinking. A same-query latency replay yields 54.7% and 70.4%; neither arithmetic
+always-on thinking, equivalent to **1.84 and 1.35 times its estimated capacity**. These are
+capacity-model ratios, not measured end-to-end speedups. A same-query latency replay yields 54.7% and 70.4%; neither arithmetic
 model measures GPU service time or end-to-end staged throughput. Archived request latency
 can include queueing/retries, and routing changes batching and prefix caching.
 

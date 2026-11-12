@@ -1,0 +1,27 @@
+% Native vector diagram; requires tikz and arrows.meta, shapes.geometric.
+% A parsed raw null is the trigger, not every downstream abstention.
+\begin{tikzpicture}[
+  x=1pt,y=1pt,
+  font=\fontsize{9}{10.5}\selectfont,
+  stbox/.style={draw=black!70,rounded corners=2pt,fill=black!3,
+    align=center,inner sep=4pt,minimum height=34pt},
+  stflow/.style={-{Stealth[length=4pt,width=3pt]},draw=black!75,line width=.65pt},
+  stcheck/.style={diamond,draw=black!70,fill=white,aspect=1.8,
+    align=center,text width=53pt,inner sep=1.5pt},
+  every node/.style={outer sep=1pt}
+]
+\node[stbox,text width=46pt] (input) at (27,0) {Query +\\candidates};
+\node[stbox,text width=58pt] (off) at (100,0) {T1\\thinking off\\Fixed gate};
+\node[stcheck] (null) at (190,0) {Parsed\\explicit null?};
+\node[stbox,text width=67pt] (keep) at (296,0) {Keep first-pass\\gated decision};
+\node[stbox,text width=76pt,fill=blue!5,draw=blue!55!black] (on) at (190,-77)
+  {T1 thinking on\\Same checkpoint,\\input and gate};
+\node[stbox,text width=67pt] (final) at (296,-77) {Final link\\or abstention};
+
+\draw[stflow] (input.east) -- (off.west);
+\draw[stflow] (off.east) -- (null.west);
+\draw[stflow] (null.east) -- node[above,inner sep=2pt] {No} (keep.west);
+\draw[stflow] (null.south) -- node[right,inner sep=3pt] {Yes} (on.north);
+\draw[stflow] (keep.south) -- (final.north);
+\draw[stflow] (on.east) -- (final.west);
+\end{tikzpicture}

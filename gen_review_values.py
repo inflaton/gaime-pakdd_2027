@@ -126,6 +126,11 @@ def generate():
     rates = benchmark["fallback_serving_proxies"]["archived_average_rate_proxy"]
     number("rvOffHours", 1000 / rates["off_queries_per_hour"])
     number("rvThinkHours", 1000 / rates["think_queries_per_hour"])
+    contrast("rvSelectiveBenchDeltaR", benchmark["selective_vs_thinking"], "R_m")
+    for label, section in (("Bench", benchmark), ("Fresh", fresh)):
+        policy = section["fallback_serving_proxies"]["archived_average_rate_proxy"]
+        number("rvSelective" + label + "Speedup",
+               policy["fallback_queries_per_hour"] / policy["think_queries_per_hour"])
     for label, key in (("Fp", "T1_fp8"), ("Nv", "T1_nvfp4")):
         rate = benchmark["common_workload_serving"]["arms"][key]["estimated_rows_per_hour"]
         count("rv" + label + "CommonRate", round(rate))

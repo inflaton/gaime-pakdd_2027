@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot the paper's benchmark frontier and the pilot's supplementary loss curves."""
+"""Plot the supplementary benchmark frontier and the pilot loss curves."""
 
 import argparse
 import json

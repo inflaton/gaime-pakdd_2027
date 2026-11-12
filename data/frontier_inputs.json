@@ -49,7 +49,7 @@
       "nfmr_pct": 3.89
     },
     "cascade": {
-      "label": "T1 thinking after null (post hoc replay)",
+      "label": "T1 selective thinking (replay)",
       "recall_pct": 96.04,
       "nfmr_pct": 5.0
     }

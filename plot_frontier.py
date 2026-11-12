@@ -35,7 +35,7 @@ LABELS = {
     "T1_27B": ("27B student, off", (1.14, 84.45), "left"),
     "T1_27B_think": ("27B student, low", (1.1, 94.65), "left"),
     "T1_think": ("T1 bf16, on", (6.25, 95.3), "left"),
-    "cascade": ("T1 null fallback (replay)", (5.0, 97.15), "center"),
+    "cascade": ("T1 selective thinking (replay)", (5.0, 97.15), "center"),
 }
 
 

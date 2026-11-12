@@ -542,6 +542,37 @@
         }
       }
     },
+    "selective_vs_thinking": {
+      "provenance": {
+        "intervals": "Archived paired intervals conditional on the post hoc replay rule"
+      },
+      "result": {
+        "delta": {
+          "P": -0.37,
+          "R_m": 0.69,
+          "N-FMR": 0.19,
+          "F0.5": -0.15
+        },
+        "ci": {
+          "P": [
+            -0.86,
+            0.07
+          ],
+          "R_m": [
+            0.0,
+            1.5
+          ],
+          "N-FMR": [
+            0.0,
+            0.59
+          ],
+          "F0.5": [
+            -0.64,
+            0.32
+          ]
+        }
+      }
+    },
     "fallback_serving_proxies": {
       "caveat": "Arithmetic proxies, not measured staged throughput or GPU service cost. Assumes all 16 request slots remain occupied; archived request latency may include queueing and retries. End-to-end batching, queueing, and mixed-mode execution have not been measured.",
       "routed": 661,
