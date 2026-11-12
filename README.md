@@ -3,17 +3,22 @@
 This supplement documents the evaluation protocol and provides an offline analysis of
 aggregate outcomes for a local merchant-resolution judge. It reconstructs the null-only
 fallback on both evaluation cohorts, reproduces the fresh fallback's paired recall interval,
-exports the four results tables, and regenerates the operating-point and training-loss figures.
+exports the four results tables, recomputes the recovery-overlap enrichment reference, summarizes
+linking on unresolved fresh queries, and regenerates the operating-point and training-loss figures.
 
 ## Reproduce
 
-Run from this directory with Python 3.9 or later. The replay and table export use the
+Run from this directory with Python 3.9 or later. The replay, overlap analysis and table export use the
 standard library.
 
 ```sh
 python3 gen_replay_values.py --check  # verify the bundled values without writing
 python3 gen_replay_values.py          # regenerate replay_values.tex
+python3 gen_review_values.py --check  # check the additional numeric table values
+python3 review_analysis.py --check    # check overlap enrichment, transitions and unresolved rates
+python3 review_analysis.py            # regenerate data/review_summary.json
 python3 export_tables.py --output-dir tables
+python3 export_tables.py --output-dir tables --check
 ```
 
 Install Matplotlib to regenerate the figures.
@@ -34,9 +39,20 @@ python3 plot_figures.py --output-dir figures
   `benchmark.csv`, `fresh.csv`, `pilot.csv`, and `serving.csv`. Quality scores and point
   contrasts are computed from outcome counts. Published intervals and serving measurements
   are supplied as archived aggregates.
-- `plot_figures.py` reads `data/figure_inputs.json` to write `fig_frontier.pdf` and
-  `fig_pilot_losses.pdf`. The input records the plotted operating points and training and
-  validation loss by optimizer step for all four pilot runs.
+- `gen_review_values.py` regenerates the manuscript's additional numeric TeX values from the
+  aggregate diagnostics, replay inputs and `data/study_values.tex`; `--check` verifies
+  `data/review_values.tex`. These numeric files contain no manuscript prose.
+- `data/review_diagnostics.json` adds aggregate recovery-set membership, paired transitions,
+  archived paired intervals, unresolved link counts, and serving estimates. It contains no
+  query identifiers or individual predictions. `review_analysis.py` independently recomputes
+  one-sided exact hypergeometric enrichment from fixed set sizes and checks the transition
+  totals and unresolved rates against `data/review_summary.json`.
+- `pilot.csv` includes the two T1 seed baselines and the augmentation contrasts; the
+  `row_kind` column distinguishes absolute scores from changes. `serving.csv` uses an explicit
+  basis column and the same common-workload timing for thinking off/on and fallback estimates.
+- `plot_frontier.py` reads `data/frontier_inputs.json` for the directly labelled benchmark
+  figure. `plot_figures.py` also reads `data/figure_inputs.json` to retain the supplementary
+  training/validation loss curves for all four pilot runs.
 
 ## Evaluation protocol
 
@@ -95,6 +111,30 @@ The retrospective transition tables reproduce the benchmark fallback's 970 corre
 NVFP4 selections replaced an explicit null. The retrospective paired intervals come from the
 study's query-level analysis and are stored as reported.
 
+**Recovery overlap.** Thinking recovers 98 of the 134 matchable queries ordinary T1 does not
+get correct (73.1%). Conditioning on that recovery rate and fixed recovery-set sizes, its
+54 overlaps with NVFP4's 59 recoveries exceed the uniform-overlap expectation of 43.15
+(one-sided exact hypergeometric p = 0.0000114); 48 overlaps with A42's 51 exceed 37.30
+(p = 0.0000060). This is exploratory enrichment under a uniform-overlap reference, not
+independent validation of a causal mechanism.
+
+On the resolved fresh slice, thinking recovers 44 of 72 noncorrect queries (61.1%). Its
+14 overlaps with NVFP4's 18 recoveries compare with expectation 11.0 (p = 0.0793), and
+seven overlaps with A42's nine compare with 5.5 (p = 0.2368). The enrichment beyond the
+base recovery rate is therefore a benchmark finding; fresh overlap does not distinguish
+it from the uniform-overlap reference at the conventional 5% level.
+
+**Unresolved fresh queries.** Among 209 queries without an agreed reference, T1 accepts nine
+links (4.31%), thinking 28 (13.40%), the zero-shot base 53 (25.36%), and local 120B 54
+(25.84%). Thinking changes 24 final decisions relative to T1: 21 thinking-only links,
+two off-only links, and one different-ID link. These counts describe linking, not accuracy.
+
+**Augmentation transitions.** On the benchmark A42 gains 51 correct matches and loses 15;
+on fresh it gains nine and loses 36, all fresh gains/losses involving explicit nulls.
+Thinking introduces 18 benchmark-negative spurious links and removes one, for a net
+increase of 17. Independent expert adjudication of the 24 unresolved fresh changes and
+19 changed benchmark-negative decisions is not provided by this package.
+
 ## Training and serving settings
 
 The companion study applied two zero-shot teachers to 3,600 queries from a pool separate
@@ -121,6 +161,24 @@ rows/hour with thinking off and 199.90 with thinking on, an estimated slowdown o
 The separate fresh wall-clock measurement covers 990 requests in 297 minutes after the
 smoke test, or approximately 200 rows/hour. These rates describe individual configurations.
 End-to-end throughput and queueing for the two-stage fallback remain to be measured.
+
+The serving CSV places the focal configurations on one timing basis:
+
+| Configuration | Basis | Estimated queries/h | Estimated Spark-hours/1,000 |
+|---|---|---:|---:|
+| T1 bf16, off | Common-workload estimate | 1,714 | 0.58 |
+| T1 bf16, on | Common-workload estimate | 200 | 5.00 |
+| T1 null fallback, benchmark | Additive routing estimate | 368 | 2.72 |
+| T1 null fallback, full fresh | Additive routing estimate | 269 | 3.72 |
+| T1 fp8 | Common-workload estimate | 2,266 | 0.44 |
+| T1 NVFP4 | Common-workload estimate | 1,997 | 0.50 |
+
+The additive fallback model uses `1 / off_rate + routed_share / on_rate` hours per query,
+with first-pass shares 661/1,550 and 626/1,000. It assumes routed requests take the benchmark
+mean thinking duration. The resulting occupied-slot estimates are 54.3% and 74.3% of
+always-on thinking. A same-query latency replay yields 54.7% and 70.4%; neither arithmetic
+model measures GPU service time or end-to-end staged throughput. Archived request latency
+can include queueing/retries, and routing changes batching and prefix caching.
 
 ## Release scope
 

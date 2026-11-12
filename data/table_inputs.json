@@ -10,13 +10,22 @@
       ]
     },
     {
+      "arm": "ZS",
+      "configuration": "12B base, zero-shot",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        5.53,
+        9.48
+      ]
+    },
+    {
       "arm": "T1",
-      "configuration": "T1 bf16, thinking off",
+      "configuration": "T1 bf16, off",
       "companion_predictions": true
     },
     {
       "arm": "T1_think",
-      "configuration": "T1 bf16, thinking on",
+      "configuration": "T1 bf16, on",
       "archived_recall_ci95_pp": [
         6.66,
         10.54
@@ -24,7 +33,7 @@
     },
     {
       "arm": "null_only",
-      "configuration": "T1, think after null (replay)"
+      "configuration": "T1 null fallback (replay)"
     },
     {
       "arm": "T1_fp8",
@@ -55,7 +64,7 @@
     },
     {
       "arm": "T1_27B",
-      "configuration": "27B student, thinking off",
+      "configuration": "27B student, off",
       "archived_recall_ci95_pp": [
         -3.31,
         0.5
@@ -63,7 +72,7 @@
     },
     {
       "arm": "T1_27B_think",
-      "configuration": "27B student, thinking low",
+      "configuration": "27B student, low",
       "archived_recall_ci95_pp": [
         5.74,
         9.63
@@ -73,13 +82,31 @@
   "fresh": {
     "rows": [
       {
+        "arm": "ZS",
+        "configuration": "12B base, zero-shot",
+        "companion_predictions": true,
+        "archived_recall_ci95_pp": [
+          5.05,
+          11.71
+        ]
+      },
+      {
+        "arm": "R120",
+        "configuration": "120B low, local",
+        "companion_predictions": true,
+        "archived_recall_ci95_pp": [
+          5.09,
+          12.02
+        ]
+      },
+      {
         "arm": "T1",
-        "configuration": "T1 bf16, thinking off",
+        "configuration": "T1 bf16, off",
         "companion_predictions": true
       },
       {
         "arm": "T1_think",
-        "configuration": "T1 bf16, thinking on",
+        "configuration": "T1 bf16, on",
         "archived_recall_ci95_pp": [
           4.82,
           11.35
@@ -87,7 +114,7 @@
       },
       {
         "arm": "null_only",
-        "configuration": "T1, think after null (replay)"
+        "configuration": "T1 null fallback (replay)"
       },
       {
         "arm": "T1_fp8",
@@ -163,6 +190,18 @@
         "WC": 1,
         "SM": 0,
         "MM": 111
+      },
+      "R120": {
+        "CM": 399,
+        "WC": 6,
+        "SM": 4,
+        "MM": 29
+      },
+      "ZS": {
+        "CM": 398,
+        "WC": 8,
+        "SM": 8,
+        "MM": 28
       }
     }
   },
@@ -341,59 +380,39 @@
     "rows": [
       {
         "arm": "T1",
-        "configuration": "T1 bf16, thinking off",
-        "common_workload_arm": "T1",
-        "archived_steady_harness_rows_per_hour": 2085.2,
-        "harness_from_companion": true
+        "configuration": "T1 bf16, off",
+        "basis": "Mean latency",
+        "common_workload_arm": "T1"
       },
       {
         "arm": "T1_think",
-        "configuration": "T1 bf16, thinking on",
-        "common_workload_arm": "T1_think",
-        "evaluation_workload": "retrospective_full",
-        "archived_evaluation_totals": {
-          "rows": 1990,
-          "minutes": 601.78
-        }
-      },
-      {
-        "arm": "T1_think",
-        "configuration": "T1 bf16, thinking on (fresh)",
-        "evaluation_workload": "fresh_all"
+        "configuration": "T1 bf16, on",
+        "basis": "Mean latency",
+        "common_workload_arm": "T1_think"
       },
       {
         "arm": "T1_fp8",
         "configuration": "T1 fp8",
-        "common_workload_arm": "T1_fp8",
-        "archived_steady_harness_rows_per_hour": 2788.7,
-        "harness_from_companion": true
+        "basis": "Mean latency",
+        "common_workload_arm": "T1_fp8"
       },
       {
         "arm": "T1_nvfp4",
         "configuration": "T1 NVFP4",
-        "common_workload_arm": "T1_nvfp4",
-        "archived_steady_harness_rows_per_hour": 2818.9,
-        "harness_from_companion": true
+        "basis": "Mean latency",
+        "common_workload_arm": "T1_nvfp4"
       },
       {
-        "arm": "T1_w4a16",
-        "configuration": "T1 W4A16",
-        "archived_steady_harness_rows_per_hour": 2469.9,
-        "harness_from_companion": true
+        "arm": "null_only",
+        "configuration": "T1 null fallback (replay)",
+        "basis": "Model, benchmark",
+        "fallback_cohort": "benchmark"
       },
       {
-        "arm": "T1_27B",
-        "configuration": "27B student, thinking off",
-        "archived_steady_harness_rows_per_hour": 1163.5
-      },
-      {
-        "arm": "T1_27B_think",
-        "configuration": "27B student, thinking low",
-        "evaluation_workload": "retrospective_full",
-        "archived_evaluation_totals": {
-          "rows": 1990,
-          "minutes": 898.1
-        }
+        "arm": "null_only",
+        "configuration": "T1 null fallback (replay)",
+        "basis": "Model, fresh",
+        "fallback_cohort": "fresh"
       }
     ],
     "archived_weights_gib": {

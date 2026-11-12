@@ -1,0 +1,57 @@
+{
+  "provenance": {
+    "source": "Archived aggregate operating points; no row-level data.",
+    "cohort": "expert-pilot evaluation subset",
+    "n": 1550,
+    "n_pos": 1010,
+    "n_neg": 540,
+    "note": "Archived aggregate operating points; intervals not plotted."
+  },
+  "points": {
+    "PROD": {
+      "label": "Production judge, GPT OSS 120B, managed endpoint",
+      "recall_pct": 92.38,
+      "nfmr_pct": 13.15
+    },
+    "ZS": {
+      "label": "Gemma 4 12B base, zero-shot",
+      "recall_pct": 94.26,
+      "nfmr_pct": 11.85
+    },
+    "T1": {
+      "label": "T1, 12B student, bf16, seed 42",
+      "recall_pct": 86.73,
+      "nfmr_pct": 1.67
+    },
+    "T1_think": {
+      "label": "T1, thinking on",
+      "recall_pct": 95.35,
+      "nfmr_pct": 4.81
+    },
+    "T1_nvfp4": {
+      "label": "T1 NVFP4 (merged, W4A4)",
+      "recall_pct": 91.98,
+      "nfmr_pct": 2.96
+    },
+    "T1_w4a16": {
+      "label": "T1 W4A16 (merged, GPTQ)",
+      "recall_pct": 88.22,
+      "nfmr_pct": 1.67
+    },
+    "T1_27B": {
+      "label": "T1-27B, Qwen 3.8 27B student, bf16",
+      "recall_pct": 85.35,
+      "nfmr_pct": 1.11
+    },
+    "T1_27B_think": {
+      "label": "T1-27B, thinking low",
+      "recall_pct": 94.46,
+      "nfmr_pct": 3.89
+    },
+    "cascade": {
+      "label": "T1 thinking after null (post hoc replay)",
+      "recall_pct": 96.04,
+      "nfmr_pct": 5.0
+    }
+  }
+}

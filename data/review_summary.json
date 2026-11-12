@@ -1,0 +1,106 @@
+{
+  "method": "Exact one-sided hypergeometric enrichment conditional on fixed recovery-set sizes",
+  "interpretation": "Exploratory uniform-overlap reference, not a causal model or independent confirmation",
+  "benchmark": {
+    "all_noncorrect_recoveries": {
+      "population": 134,
+      "thinking_rescues": 98,
+      "thinking_rescue_rate_pct": 73.13432835820896,
+      "comparisons": {
+        "T1_nvfp4": {
+          "rescued": 59,
+          "overlap_with_thinking": 54,
+          "expected_overlap": 43.149253731343286,
+          "one_sided_hypergeometric_p": 1.1372219874622382e-05
+        },
+        "A42": {
+          "rescued": 51,
+          "overlap_with_thinking": 48,
+          "expected_overlap": 37.298507462686565,
+          "one_sided_hypergeometric_p": 5.99563607738601e-06
+        }
+      }
+    },
+    "explicit_null_recoveries": {
+      "population": 130,
+      "thinking_rescues": 94,
+      "thinking_rescue_rate_pct": 72.3076923076923,
+      "comparisons": {
+        "T1_nvfp4": {
+          "rescued": 58,
+          "overlap_with_thinking": 53,
+          "expected_overlap": 41.93846153846154,
+          "one_sided_hypergeometric_p": 7.2080077002022535e-06
+        },
+        "A42": {
+          "rescued": 50,
+          "overlap_with_thinking": 47,
+          "expected_overlap": 36.15384615384615,
+          "one_sided_hypergeometric_p": 4.263162408055332e-06
+        }
+      }
+    }
+  },
+  "fresh": {
+    "all_noncorrect_recoveries": {
+      "population": 72,
+      "thinking_rescues": 44,
+      "thinking_rescue_rate_pct": 61.111111111111114,
+      "comparisons": {
+        "T1_nvfp4": {
+          "rescued": 18,
+          "overlap_with_thinking": 14,
+          "expected_overlap": 11.0,
+          "one_sided_hypergeometric_p": 0.07927855653302178
+        },
+        "A42": {
+          "rescued": 9,
+          "overlap_with_thinking": 7,
+          "expected_overlap": 5.5,
+          "one_sided_hypergeometric_p": 0.23682184337847523
+        }
+      }
+    },
+    "explicit_null_recoveries": {
+      "population": 70,
+      "thinking_rescues": 42,
+      "thinking_rescue_rate_pct": 60.0,
+      "comparisons": {
+        "T1_nvfp4": {
+          "rescued": 18,
+          "overlap_with_thinking": 14,
+          "expected_overlap": 10.8,
+          "one_sided_hypergeometric_p": 0.06363081540103468
+        },
+        "A42": {
+          "rescued": 9,
+          "overlap_with_thinking": 7,
+          "expected_overlap": 5.4,
+          "one_sided_hypergeometric_p": 0.21448236444884053
+        }
+      }
+    },
+    "unresolved_acceptance": {
+      "T1": {
+        "accepted": 9,
+        "n_unresolved": 209,
+        "accepted_pct": 4.30622009569378
+      },
+      "T1_think": {
+        "accepted": 28,
+        "n_unresolved": 209,
+        "accepted_pct": 13.397129186602871
+      },
+      "ZS": {
+        "accepted": 53,
+        "n_unresolved": 209,
+        "accepted_pct": 25.358851674641148
+      },
+      "R120": {
+        "accepted": 54,
+        "n_unresolved": 209,
+        "accepted_pct": 25.83732057416268
+      }
+    }
+  }
+}

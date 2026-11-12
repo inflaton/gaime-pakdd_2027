@@ -3,6 +3,7 @@
 
 import argparse
 import csv
+import io
 from decimal import Decimal
 import json
 from pathlib import Path
@@ -78,6 +79,15 @@ def quality_rows(table, outcomes, cohort, fallback_ci=None):
         }
 
 
+def pilot_baselines(diagnostics):
+    for arm, seed in (("T1", 42), ("T1s43", 43)):
+        record = diagnostics["benchmark"]["arms"][arm]
+        yield {"row_kind": "baseline", "configuration": f"T1 bf16, seed {seed}",
+               "precision_pct": f"{record['metrics']['P']:.2f}",
+               "match_recall_pct": f"{record['metrics']['R_m']:.2f}",
+               "spurious_matches": record["SM"], "f05_pct": f"{record['metrics']['F0.5']:.2f}"}
+
+
 def pilot_rows(pilot, benchmark):
     outcomes = {**benchmark["outcomes"], **pilot["outcomes"]}
     cohort = benchmark["cohort"]
@@ -92,6 +102,7 @@ def pilot_rows(pilot, benchmark):
                            augmented["SM"] - baseline["SM"]))
         recall, f05, spurious = (mean(metric) for metric in zip(*deltas))
         yield {
+            "row_kind": "augmentation_contrast",
             "configuration": row["configuration"],
             "n_seed_pairs": len(deltas),
             "recall_delta_pp": f"{recall:.2f}",
@@ -102,45 +113,50 @@ def pilot_rows(pilot, benchmark):
         }
 
 
-def serving_rows(serving, timing, fresh_wall_clock):
+def serving_rows(serving, diagnostics):
+    timing = diagnostics["benchmark"]["common_workload_serving"]
     for row in serving["rows"]:
-        arm = row["arm"]
-        weights_gib = serving["archived_weights_gib"][arm]
-        common = timing["arms"].get(row.get("common_workload_arm"))
-        harness_rate = row.get("archived_steady_harness_rows_per_hour")
-        workload = row.get("evaluation_workload")
-        evaluation = fresh_wall_clock if workload == "fresh_all" else row.get("archived_evaluation_totals")
-        common_rate = common["estimated_rows_per_hour"] if common else None
-        evaluation_rate = 60 * evaluation["rows"] / evaluation["minutes"] if evaluation else None
+        fallback = row.get("fallback_cohort")
+        if fallback:
+            proxy = diagnostics[fallback]["fallback_serving_proxies"]
+            rate = proxy["archived_average_rate_proxy"]["fallback_queries_per_hour"]
+            routed = proxy["routed"]
+            denominator = proxy["n"]
+            n_workload = timing["n"]
+            weight_arm = "T1"
+        else:
+            rate = timing["arms"][row["common_workload_arm"]]["estimated_rows_per_hour"]
+            routed, denominator = None, None
+            n_workload = timing["n"]
+            weight_arm = row["arm"]
         yield {
             "configuration": row["configuration"],
+            "basis": row["basis"],
             "concurrency": timing["concurrency"],
-            "loaded_weight_gib_archived": f"{Decimal(str(weights_gib)):.1f}",
-            "common_workload_benchmark_queries": timing["n"] if common else None,
-            "common_workload_estimate_rows_per_hour_archived": f"{common_rate:.0f}" if common_rate is not None else None,
-            "steady_harness_rows_per_hour_archived": f"{harness_rate:.0f}" if harness_rate is not None else None,
-            "steady_harness_from_companion": (
-                row.get("harness_from_companion", False) if harness_rate is not None else None
-            ),
-            "evaluation_workload": workload,
-            "evaluation_rows_archived": evaluation["rows"] if evaluation else None,
-            "evaluation_minutes_archived": evaluation["minutes"] if evaluation else None,
-            "evaluation_rows_per_hour": f"{evaluation_rate:.0f}" if evaluation_rate is not None else None,
-            "evaluation_rate_is_approximate": workload == "fresh_all" if evaluation else None,
+            "loaded_weight_gib_archived": f"{Decimal(str(serving['archived_weights_gib'][weight_arm])):.1f}",
+            "reference_timing_workload_queries": n_workload,
+            "queries_per_hour_estimated": f"{rate:.0f}",
+            "spark_hours_per_1000_estimated": f"{1000 / rate:.2f}",
+            "routed_queries": routed,
+            "routing_cohort_queries": denominator,
+            "staged_throughput_measured": False,
         }
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True, help="directory for the generated CSV files")
+    parser.add_argument("--check", action="store_true", help="check existing CSV files without writing")
     args = parser.parse_args()
 
     table = json.loads(TABLE_INPUTS.read_text(encoding="utf-8"))
     replay = json.loads(REPLAY_INPUTS.read_text(encoding="utf-8"))
     transitions = json.loads(BENCHMARK_TRANSITIONS.read_text(encoding="utf-8"))
 
+    review = json.loads((HERE / "data/review_diagnostics.json").read_text(encoding="utf-8"))
     benchmark = replay["benchmark"]
-    benchmark_counts = {**benchmark["outcomes"], "null_only": benchmark_replay(transitions, benchmark)}
+    benchmark_counts = {**benchmark["outcomes"], **review["benchmark"]["arms"],
+                        "null_only": benchmark_replay(transitions, benchmark)}
     benchmark_fallback_ci = benchmark["cascade_benchmark"]["vs_T1"]["ci"]["R_m"]
     fresh = replay["fresh"]
     fresh_counts = fresh_outcomes(fresh, table["fresh"]["outcomes"])
@@ -149,19 +165,25 @@ def main():
             table["benchmark_rows"], benchmark_counts, benchmark["cohort"], benchmark_fallback_ci
         )),
         "fresh": list(quality_rows(table["fresh"]["rows"], fresh_counts, fresh["cohort"])),
-        "pilot": list(pilot_rows(table["pilot"], benchmark)),
-        "serving": list(serving_rows(
-            table["serving"], benchmark["benchmark_quality_timing"], replay["fresh_wall_clock"]
-        )),
+        "pilot": list(pilot_baselines(review)) + list(pilot_rows(table["pilot"], benchmark)),
+        "serving": list(serving_rows(table["serving"], review)),
     }
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    if not args.check:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
     for name, rows in tables.items():
         path = args.output_dir / f"{name}.csv"
-        with path.open("w", encoding="utf-8", newline="") as stream:
-            writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
-            writer.writeheader()
-            writer.writerows(rows)
-        print(path)
+        stream = io.StringIO(newline="")
+        fields = list(dict.fromkeys(key for row in rows for key in row))
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+        rendered = stream.getvalue()
+        if args.check:
+            require(path.is_file() and path.read_text(encoding="utf-8") == rendered, f"{name}.csv differs")
+        else:
+            with path.open("w", encoding="utf-8", newline="") as destination:
+                destination.write(rendered)
+        print(f"{path}: {'matches' if args.check else 'written'}")
 
 
 if __name__ == "__main__":
