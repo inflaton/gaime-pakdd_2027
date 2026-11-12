@@ -46,8 +46,9 @@ python3 plot_figures.py --output-dir figures
 - `export_tables.py` uses the replay inputs and `data/table_inputs.json` to write
   `benchmark.csv`, `fresh.csv`, `serving.csv`, and `pilot.csv`, corresponding to
   Tables 1–4 in the manuscript. Quality scores and point
-  contrasts are computed from outcome counts. Published intervals and serving measurements
-  are supplied as archived aggregates.
+  contrasts are computed from outcome counts. The benchmark CSV also includes the paired
+  no-match false-match-rate and F0.5 contrasts for selective thinking versus thinking off.
+  Published intervals and serving measurements are supplied as archived aggregates.
 - `gen_review_values.py` regenerates the manuscript's additional numeric TeX values from the
   aggregate diagnostics, replay inputs and `data/study_values.tex`; `--check` verifies
   `data/review_values.tex`. These numeric files contain no manuscript prose.
@@ -117,6 +118,12 @@ refer to the matchable and no-match reference classes. In the retrospective tabl
 groups rejections and `failure` groups failed requests and invalid verdicts. The script
 checks the arm totals and applies the routing rule to the thinking comparison counts.
 
+One explicit-null policy is reported. The development record does not document the total
+number of routing rules inspected; subsequent controls are not a selection log. Confidence
+intervals condition on the selected rule and do not adjust for policy selection. The
+always-on thinking run did not meet the prespecified F0.5 criterion on its 200-query
+screening subset; the subsequent full benchmark evaluation is exploratory.
+
 ## Results and interpretation
 
 | Cohort and policy | Recall (%) | Wrong candidates | Spurious links | Routed to thinking |
@@ -137,11 +144,24 @@ convention as the other fresh contrasts: 4,000 resamples, NumPy `default_rng(42)
 routing rule. It differs from the selective-minus-always-on contrast reported below;
 the latter retains its separately reproduced interval.
 
-Among the reported T1 configurations, selective thinking has the highest observed recall
-on both cohorts; this is not a claim about every model or unreported configuration. On the
-benchmark its recall difference against always-on thinking is +0.69 percentage points
-(archived 95% paired interval 0.00 to +1.50), so this benchmark interval includes zero.
-Its F0.5 point estimate is slightly lower on both cohorts.
+Selective thinking has the highest observed recall among the reported T1 configurations
+on both cohorts. Its recall point estimates exceed always-on thinking, with a benchmark
+difference of +0.69 percentage points (archived 95% paired interval 0.00 to +1.50).
+That benchmark interval includes zero, and the policy's F0.5 point estimate is slightly
+lower on both cohorts.
+
+The base 12B model with thinking on reaches 96.44% benchmark recall, compared with 96.04%
+for selective thinking. It makes 62 spurious links versus 27, with a no-match false-match
+rate of 11.48% and F0.5 of 94.05%. Selective thinking is therefore a policy for the tuned
+T1 checkpoint, not the highest-recall configuration across all models.
+
+Against ordinary T1 thinking off, selective thinking recovers 94 additional benchmark
+matches (+9.31 recall points), but spurious links rise from nine to 27. The paired no-match false-match-rate
+increase is **+3.33 points [1.87, 4.88]**, while F0.5 changes by **+0.73 points
+[-0.07, 1.51]**. The intervals are archived paired 95% intervals conditional on the
+post hoc policy. The capacity model estimates 368 benchmark queries/hour for the policy
+versus 1,714 for thinking off; its estimated capacity advantage is relative to always-on
+thinking, not to the off baseline.
 
 The fresh routing denominator includes the unresolved queries. Recall and error counts use
 the resolved reference. Selective thinking on the fresh slice gains nine correct selections and loses two

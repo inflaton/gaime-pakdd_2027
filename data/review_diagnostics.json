@@ -214,6 +214,30 @@
           "null": 469,
           "spurious": 64
         }
+      },
+      "ZS_think": {
+        "n_pos": 1010,
+        "n_neg": 540,
+        "CM": 974,
+        "WC": 6,
+        "SM": 62,
+        "MM": 30,
+        "metrics": {
+          "P": 93.47,
+          "R_m": 96.44,
+          "N-FMR": 11.48,
+          "F0.5": 94.05
+        },
+        "pos": {
+          "correct": 974,
+          "null": 30,
+          "wrong": 6
+        },
+        "neg": {
+          "gate_conf": 2,
+          "null": 476,
+          "spurious": 62
+        }
       }
     },
     "transitions": {
@@ -539,6 +563,43 @@
         "neg": {
           "null": 513,
           "spurious": 27
+        }
+      }
+    },
+    "selective_vs_off": {
+      "provenance": {
+        "intervals": "Archived paired intervals conditional on the post hoc selective-thinking rule evaluated from stored outputs",
+        "bootstrap": {
+          "resamples": 4000,
+          "seed": 42,
+          "level": 95,
+          "method": "aligned paired percentile row bootstrap over the 1,550 eval-side rows"
+        }
+      },
+      "result": {
+        "delta": {
+          "P": -1.73,
+          "R_m": 9.31,
+          "N-FMR": 3.33,
+          "F0.5": 0.73
+        },
+        "ci": {
+          "P": [
+            -2.6,
+            -0.91
+          ],
+          "R_m": [
+            7.5,
+            11.1
+          ],
+          "N-FMR": [
+            1.87,
+            4.88
+          ],
+          "F0.5": [
+            -0.07,
+            1.51
+          ]
         }
       }
     },
@@ -873,6 +934,46 @@
             ]
           },
           "dSM": 55
+        }
+      },
+      "ZS_think-T1": {
+        "provenance": {
+          "intervals": "Copied archived paired intervals; not recomputed here",
+          "bootstrap": {
+            "resamples": 4000,
+            "seed": 42,
+            "level": 95,
+            "method": "aligned paired percentile row bootstrap over the 1,550 eval-side rows"
+          }
+        },
+        "result": {
+          "variant": "ZS_think",
+          "base": "T1",
+          "delta": {
+            "P": -5.06,
+            "R_m": 9.7,
+            "N-FMR": 9.81,
+            "F0.5": -1.87
+          },
+          "ci": {
+            "P": [
+              -6.52,
+              -3.68
+            ],
+            "R_m": [
+              7.8,
+              11.56
+            ],
+            "N-FMR": [
+              7.42,
+              12.43
+            ],
+            "F0.5": [
+              -3.13,
+              -0.68
+            ]
+          },
+          "dSM": 53
         }
       }
     }

@@ -443,6 +443,18 @@
           "N-FMR": 5.0,
           "F0.5": 96.65
         }
+      },
+      "ZS_think": {
+        "CM": 974,
+        "WC": 6,
+        "SM": 62,
+        "MM": 30,
+        "metrics": {
+          "P": 93.47,
+          "R_m": 96.44,
+          "N-FMR": 11.48,
+          "F0.5": 94.05
+        }
       }
     },
     "first_pass_explicit_nulls": {
@@ -492,5 +504,9 @@
       "T1-s43": 0.004788337741047144,
       "T1-X490-s43": 0.0047548445872962475
     }
+  },
+  "thinking_screen": {
+    "n_queries": 200,
+    "provenance": "Prespecified F0.5 screening subset recorded in the frozen thinking protocol and original runner"
   }
 }

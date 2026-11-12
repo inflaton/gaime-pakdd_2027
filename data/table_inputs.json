@@ -19,6 +19,15 @@
       ]
     },
     {
+      "arm": "ZS_think",
+      "configuration": "12B base, thinking on",
+      "companion_predictions": true,
+      "archived_recall_ci95_pp": [
+        7.8,
+        11.56
+      ]
+    },
+    {
       "arm": "T1",
       "configuration": "T1 bf16, off",
       "companion_predictions": true

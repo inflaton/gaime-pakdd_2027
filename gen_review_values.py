@@ -51,7 +51,8 @@ def generate():
 
     benchmark, fresh = diagnostics["benchmark"], diagnostics["fresh"]
     count("rvRateUnit", fresh["cohort"]["n_total"])
-    for prefix, key in (("rvBase", "ZS"), ("rvSeedB", "T1s43"), ("rvAugA", "A42"), ("rvAugB", "A43")):
+    for prefix, key in (("rvBase", "ZS"), ("rvBaseThink", "ZS_think"), ("rvSeedB", "T1s43"),
+                        ("rvAugA", "A42"), ("rvAugB", "A43")):
         arm(prefix, benchmark["arms"][key])
     for prefix, key in (("rvFreshBase", "ZS"), ("rvFreshLocal", "R120")):
         arm(prefix, fresh["arms"][key])
@@ -59,6 +60,9 @@ def generate():
         contrast("rvProdDelta" + suffix, benchmark["archived_contrasts"]["T1_think-PROD"], metric)
     contrast("rvThinkDeltaFmr", benchmark["archived_contrasts"]["T1_think-T1"], "N-FMR")
     contrast("rvBaseDeltaR", benchmark["archived_contrasts"]["ZS-T1"], "R_m")
+    contrast("rvBaseThinkDeltaR", benchmark["archived_contrasts"]["ZS_think-T1"], "R_m")
+    for suffix, metric in (("Fmr", "N-FMR"), ("F", "F0.5")):
+        contrast("rvSelectiveVsOff" + suffix, benchmark["selective_vs_off"], metric)
     for prefix, key in (("rvFreshBaseDeltaR", "ZS_vs_T1"), ("rvFreshLocalDeltaR", "R120_vs_T1")):
         contrast(prefix, fresh["archived_contrasts"][key], "R_m")
     contrast("rvSelectiveFreshVsOffDeltaR", fresh["selective_vs_off"], "R_m")
@@ -110,6 +114,8 @@ def generate():
             number(prefix + label + "ExpectedOverlap", comparison["expected_overlap"], 1)
             probability(prefix + label + "OverlapP", comparison["p_upper"])
     unresolved = fresh["unresolved_acceptance"]
+    changed_negatives = benchmark["transitions"]["T1_think-T1"]
+    count("rvBenchChangedNegatives", changed_negatives["new_spurious"] + changed_negatives["removed_spurious"])
     count("rvUnresolvedN", unresolved["n"])
     for label, key in (("Stu", "T1"), ("Think", "T1_think"), ("Selective", "T1_selective"),
                        ("Base", "ZS"), ("Local", "R120")):

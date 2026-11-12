@@ -52,14 +52,25 @@ def archived_interval(metric, bounds):
     }
 
 
-def quality_rows(table, outcomes, cohort, fallback_ci=None):
+def quality_rows(table, outcomes, cohort, fallback_ci=None, paired_contrasts=None):
     reference = "T1 bf16, thinking off"
-    baseline_recall = scores(outcomes["T1"], cohort)["R_m"]
+    baseline_scores = scores(outcomes["T1"], cohort)
+    baseline_recall = baseline_scores["R_m"]
+    paired_contrasts = paired_contrasts or {}
     for row in table:
         arm = row["arm"]
         counts = outcomes[arm]
         result = scores(counts, cohort)
         ci = fallback_ci if arm == "null_only" else row.get("archived_recall_ci95_pp")
+        paired = paired_contrasts.get(arm, {})
+        extra_metrics = {}
+        for metric, field in (("N-FMR", "no_match_false_match_rate"), ("F0.5", "f05")):
+            bounds = paired.get("ci", {}).get(metric)
+            extra_metrics.update({
+                f"{field}_reference": reference if bounds is not None else None,
+                f"{field}_delta_pp": f"{result[metric] - baseline_scores[metric]:.2f}" if bounds is not None else None,
+                **archived_interval(field, bounds),
+            })
         yield {
             "configuration": row["configuration"],
             "companion_predictions": row.get("companion_predictions", False),
@@ -76,6 +87,7 @@ def quality_rows(table, outcomes, cohort, fallback_ci=None):
             "recall_reference": reference if ci is not None else None,
             "recall_delta_pp": f'{result["R_m"] - baseline_recall:.2f}' if ci is not None else None,
             **archived_interval("recall", ci),
+            **extra_metrics,
         }
 
 
@@ -158,12 +170,13 @@ def main():
     benchmark_counts = {**benchmark["outcomes"], **review["benchmark"]["arms"],
                         "null_only": benchmark_replay(transitions, benchmark)}
     benchmark_fallback_ci = benchmark["cascade_benchmark"]["vs_T1"]["ci"]["R_m"]
+    benchmark_paired = {"null_only": review["benchmark"]["selective_vs_off"]["result"]}
     fresh = replay["fresh"]
     fresh_counts = fresh_outcomes(fresh, table["fresh"]["outcomes"])
     fresh_selective_ci = review["fresh"]["selective_vs_off"]["result"]["ci"]["R_m"]
     tables = {
         "benchmark": list(quality_rows(
-            table["benchmark_rows"], benchmark_counts, benchmark["cohort"], benchmark_fallback_ci
+            table["benchmark_rows"], benchmark_counts, benchmark["cohort"], benchmark_fallback_ci, benchmark_paired
         )),
         "fresh": list(quality_rows(table["fresh"]["rows"], fresh_counts, fresh["cohort"], fresh_selective_ci)),
         "pilot": list(pilot_baselines(review)) + list(pilot_rows(table["pilot"], benchmark)),
