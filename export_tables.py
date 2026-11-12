@@ -160,11 +160,12 @@ def main():
     benchmark_fallback_ci = benchmark["cascade_benchmark"]["vs_T1"]["ci"]["R_m"]
     fresh = replay["fresh"]
     fresh_counts = fresh_outcomes(fresh, table["fresh"]["outcomes"])
+    fresh_selective_ci = review["fresh"]["selective_vs_off"]["result"]["ci"]["R_m"]
     tables = {
         "benchmark": list(quality_rows(
             table["benchmark_rows"], benchmark_counts, benchmark["cohort"], benchmark_fallback_ci
         )),
-        "fresh": list(quality_rows(table["fresh"]["rows"], fresh_counts, fresh["cohort"])),
+        "fresh": list(quality_rows(table["fresh"]["rows"], fresh_counts, fresh["cohort"], fresh_selective_ci)),
         "pilot": list(pilot_baselines(review)) + list(pilot_rows(table["pilot"], benchmark)),
         "serving": list(serving_rows(table["serving"], review)),
     }

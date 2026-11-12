@@ -1359,6 +1359,53 @@
         }
       }
     },
+    "selective_vs_off": {
+      "provenance": {
+        "method": "Aligned paired percentile query bootstrap over all resolved rows, including the resampled positive denominator",
+        "row_order": "Original audit cohort order restricted to the 791 auditor-resolved queries; not sorted",
+        "numpy_version": "1.26.4",
+        "random_generator": "numpy.random.default_rng",
+        "resamples": 4000,
+        "seed": 42,
+        "level": 95,
+        "batch_size": 200,
+        "percentile_method": "numpy.nanpercentile default linear interpolation",
+        "selection": "Exploratory; confidence interval conditions on the post hoc replay rule and fixed checkpoints/reference labels",
+        "control": {
+          "delta_R_m": 8.06,
+          "ci_R_m": [
+            4.82,
+            11.35
+          ],
+          "matches_archive": true
+        }
+      },
+      "result": {
+        "variant": "T1 selective thinking (replay)",
+        "base": "T1 bf16, thinking off",
+        "n_resolved": 791,
+        "n_pos": 434,
+        "n_neg": 357,
+        "gains": 42,
+        "losses": 0,
+        "delta": {
+          "R_m": 9.68
+        },
+        "ci": {
+          "R_m": [
+            6.95,
+            12.61
+          ]
+        },
+        "unrounded": {
+          "delta_R_m": 9.677419354838705,
+          "ci_R_m": [
+            6.950672645739928,
+            12.610669297616198
+          ]
+        }
+      }
+    },
     "fallback_all1000_routing": {
       "routed": 626,
       "total": 1000,

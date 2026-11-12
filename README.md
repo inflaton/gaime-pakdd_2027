@@ -119,6 +119,15 @@ checks the arm totals and applies the routing rule to the thinking comparison co
 | Fresh, always-on thinking | 91.47 | 1 | 0 | 1,000 / 1,000 |
 | Fresh, T1 selective thinking (replay) | 93.09 | 3 | 0 | 626 / 1,000 |
 
+Both quality CSVs use ordinary T1 with thinking off as their recall-change reference.
+The fresh selective-thinking row compares 404 versus 362 correct matches on 434 matchable
+queries: 42 gains and no lost correct matches. Its **+9.68-point** recall change has an
+archived **95% interval [+6.95, +12.61]**, computed by the same aligned paired row-bootstrap
+convention as the other fresh contrasts: 4,000 resamples, NumPy `default_rng(42)`, over the
+791 resolved queries in their original order. This interval conditions on the post hoc
+routing rule. It differs from the selective-minus-always-on contrast reported below;
+the latter retains its separately reproduced interval.
+
 Among the reported T1 configurations, selective thinking has the highest observed recall
 on both cohorts; this is not a claim about every model or unreported configuration. On the
 benchmark its recall difference against always-on thinking is +0.69 percentage points
