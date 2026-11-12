@@ -91,6 +91,11 @@
         "n_unresolved": 209,
         "accepted_pct": 13.397129186602871
       },
+      "T1_selective": {
+        "accepted": 30,
+        "n_unresolved": 209,
+        "accepted_pct": 14.354066985645932
+      },
       "ZS": {
         "accepted": 53,
         "n_unresolved": 209,

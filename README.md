@@ -1,16 +1,23 @@
-# Merchant-resolution evaluation supplement
+# Selective Thinking for Recall Recovery in Merchant Resolution
 
-This supplement documents the evaluation protocol and provides an offline analysis of
-aggregate outcomes for a local merchant-resolution judge. It reconstructs **T1 selective thinking (replay)** on both evaluation cohorts and reproduces
-its fresh paired recall interval,
-exports the four results tables, recomputes the recovery-overlap enrichment reference, summarizes
-linking on unresolved fresh queries, and regenerates the operating-point and training-loss figures.
+Anonymous evaluation supplement
+
+This supplement documents **T1 selective thinking**, a two-stage merchant-resolution
+policy that invokes thinking only when the first pass returns an explicit parsed null.
+Its main contribution is the routing rule: accepted first-pass links, gate rejections,
+and request failures keep their original outcomes. The policy is evaluated post hoc,
+offline, using stored paired predictions on the benchmark and fresh cohorts; no staged
+serving run was performed.
+
+The package reproduces the policy outcomes and its fresh paired recall interval, exports
+the four results tables, recomputes recovery-overlap enrichment, summarizes linking on
+unresolved fresh queries, and regenerates the operating-point and training-loss figures.
 A native TikZ source and standalone wrapper render the selective-thinking routing diagram.
 
 ## Reproduce
 
-Run from this directory with Python 3.9 or later. The replay, overlap analysis and table export use the
-standard library.
+Run from this directory with Python 3.9 or later. The offline policy evaluation, overlap
+analysis and table export use the standard library.
 
 ```sh
 python3 gen_replay_values.py --check  # verify the bundled values without writing
@@ -37,7 +44,8 @@ python3 plot_figures.py --output-dir figures
   selective-thinking rule on both cohorts, and formats the resulting values for the manuscript.
 - `replay_values.tex` is the expected output for the bundled inputs.
 - `export_tables.py` uses the replay inputs and `data/table_inputs.json` to write
-  `benchmark.csv`, `fresh.csv`, `pilot.csv`, and `serving.csv`. Quality scores and point
+  `benchmark.csv`, `fresh.csv`, `serving.csv`, and `pilot.csv`, corresponding to
+  Tables 1–4 in the manuscript. Quality scores and point
   contrasts are computed from outcome counts. Published intervals and serving measurements
   are supplied as archived aggregates.
 - `gen_review_values.py` regenerates the manuscript's additional numeric TeX values from the
@@ -96,9 +104,10 @@ spurious selections on no-match queries. Recall is `CM / (CM + WC + MM)`, precis
 `CM / (CM + WC + SM)`, and the no-match false-match rate is `SM / n_neg`. The script reports
 these as percentages and computes F0.5, which weights precision more than recall.
 
-**T1 selective thinking (replay).** The first pass is T1 with thinking off. The replay uses the paired
-thinking-on outcome only after an explicit parsed null. A selected candidate, gate rejection,
-or failed request keeps its first-pass outcome. Thus an accepted first-pass link is never
+**T1 selective thinking.** The first pass is T1 with thinking off. The offline policy
+evaluation substitutes the stored paired thinking-on outcome only after an explicit
+parsed null. A selected candidate, gate rejection, or failed request keeps its first-pass
+outcome. Thus an accepted first-pass link is never
 replaced; a first-pass gate rejection or request failure stays an abstention. The route
 trigger is a parsed explicit null ID, not every downstream abstention. Both passes use
 the same checkpoint, query, candidate set, prompt and fixed acceptance gate; only the
@@ -114,10 +123,10 @@ checks the arm totals and applies the routing rule to the thinking comparison co
 |---|---:|---:|---:|---:|
 | Retrospective, thinking off | 86.73 | 4 | 9 | 0 / 1,550 |
 | Retrospective, always-on thinking | 95.35 | 2 | 26 | 1,550 / 1,550 |
-| Retrospective, T1 selective thinking (replay) | 96.04 | 5 | 27 | 661 / 1,550 |
+| Retrospective, T1 selective thinking | 96.04 | 5 | 27 | 661 / 1,550 |
 | Fresh, thinking off | 83.41 | 2 | 0 | 0 / 1,000 |
 | Fresh, always-on thinking | 91.47 | 1 | 0 | 1,000 / 1,000 |
-| Fresh, T1 selective thinking (replay) | 93.09 | 3 | 0 | 626 / 1,000 |
+| Fresh, T1 selective thinking | 93.09 | 3 | 0 | 626 / 1,000 |
 
 Both quality CSVs use ordinary T1 with thinking off as their recall-change reference.
 The fresh selective-thinking row compares 404 versus 362 correct matches on 434 matchable
@@ -143,7 +152,7 @@ losses, ties, and no-match queries. This exploratory interval conditions on the 
 after inspecting the transitions. The prespecified fresh thinking-on versus thinking-off
 comparison has a different estimand and interval.
 
-The retrospective transition tables reproduce the benchmark selective-thinking replay's 970 correct selections,
+The retrospective transition tables reproduce 970 correct selections for benchmark selective thinking,
 5 wrong candidates, and 27 spurious links. They also show that 58 of the 59 newly correct
 NVFP4 selections replaced an explicit null. The retrospective paired intervals come from the
 study's query-level analysis and are stored as reported.
@@ -161,9 +170,12 @@ seven overlaps with A42's nine compare with 5.5 (p = 0.2368). The enrichment bey
 base recovery rate is therefore a benchmark finding; fresh overlap does not distinguish
 it from the uniform-overlap reference at the conventional 5% level.
 
-**Unresolved fresh queries.** Among 209 queries without an agreed reference, T1 accepts nine
-links (4.31%), thinking 28 (13.40%), the zero-shot base 53 (25.36%), and local 120B 54
-(25.84%). Thinking changes 24 final decisions relative to T1: 21 thinking-only links,
+**Unresolved fresh queries.** Among 209 queries without an agreed reference, selective
+thinking accepts 30 links (14.35%), compared with nine (4.31%) for thinking off and
+28 (13.40%) for always-on thinking. The zero-shot base accepts 53 (25.36%) and local
+120B 54 (25.84%). The policy therefore links more often than either T1 reference on
+this slice, where correctness is unresolved. Always-on thinking changes 24 final
+decisions relative to thinking off: 21 thinking-only links,
 two off-only links, and one different-ID link. These counts describe linking, not accuracy.
 
 **Augmentation transitions.** On the benchmark A42 gains 51 correct matches and loses 15;
@@ -205,17 +217,18 @@ The serving CSV places the focal configurations on one timing basis:
 |---|---|---:|---:|
 | T1 bf16, off | Common-workload estimate | 1,714 | 0.58 |
 | T1 bf16, on | Common-workload estimate | 200 | 5.00 |
-| T1 selective thinking (replay), benchmark | Additive routing estimate | 368 | 2.72 |
-| T1 selective thinking (replay), full fresh | Additive routing estimate | 269 | 3.72 |
+| T1 selective thinking, benchmark | Additive routing estimate | 368 | 2.72 |
+| T1 selective thinking, full fresh | Additive routing estimate | 269 | 3.72 |
 | T1 fp8 | Common-workload estimate | 2,266 | 0.44 |
 | T1 NVFP4 | Common-workload estimate | 1,997 | 0.50 |
 
 The additive selective-thinking model uses `1 / off_rate + routed_share / on_rate` hours per query,
-with first-pass shares 661/1,550 and 626/1,000. It assumes routed requests take the benchmark
+with routed shares 661/1,550 and 626/1,000. It assumes routed requests take the benchmark
 mean thinking duration. The resulting occupied-slot estimates are 54.3% and 74.3% of
 always-on thinking, equivalent to **1.84 and 1.35 times its estimated capacity**. These are
-capacity-model ratios, not measured end-to-end speedups. A same-query latency replay yields 54.7% and 70.4%; neither arithmetic
-model measures GPU service time or end-to-end staged throughput. Archived request latency
+capacity-model ratios, not measured end-to-end speedups. An offline calculation using
+same-query request latencies yields 54.7% and 70.4%; neither arithmetic model measures
+GPU service time or end-to-end staged throughput. Archived request latency
 can include queueing/retries, and routing changes batching and prefix caching.
 
 ## Release scope

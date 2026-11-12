@@ -73,7 +73,7 @@ def generate():
     unresolved = bundle["fresh"]["unresolved_acceptance"]
     n = unresolved["n"]
     rates = {}
-    for arm in ("T1", "T1_think", "ZS", "R120"):
+    for arm in ("T1", "T1_think", "T1_selective", "ZS", "R120"):
         record = unresolved["arms"][arm]
         rate = 100 * record["accepted"] / n
         require(math.isclose(rate, record["accepted_pct"], abs_tol=0.005), "Unresolved acceptance mismatch")

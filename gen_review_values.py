@@ -111,7 +111,8 @@ def generate():
             probability(prefix + label + "OverlapP", comparison["p_upper"])
     unresolved = fresh["unresolved_acceptance"]
     count("rvUnresolvedN", unresolved["n"])
-    for label, key in (("Stu", "T1"), ("Think", "T1_think"), ("Base", "ZS"), ("Local", "R120")):
+    for label, key in (("Stu", "T1"), ("Think", "T1_think"), ("Selective", "T1_selective"),
+                       ("Base", "ZS"), ("Local", "R120")):
         count("rvUnresolved" + label + "Links", unresolved["arms"][key]["accepted"])
         number("rvUnresolved" + label + "Pct", unresolved["arms"][key]["accepted_pct"], 1)
     number("rvBaseFmrRatio", (benchmark["arms"]["ZS"]["SM"] / benchmark["cohort"]["n_neg"])

@@ -33,7 +33,7 @@
     },
     {
       "arm": "null_only",
-      "configuration": "T1 selective thinking (replay)"
+      "configuration": "T1 selective thinking"
     },
     {
       "arm": "T1_fp8",
@@ -114,7 +114,7 @@
       },
       {
         "arm": "null_only",
-        "configuration": "T1 selective thinking (replay)"
+        "configuration": "T1 selective thinking"
       },
       {
         "arm": "T1_fp8",
@@ -404,13 +404,13 @@
       },
       {
         "arm": "null_only",
-        "configuration": "T1 selective thinking (replay)",
+        "configuration": "T1 selective thinking",
         "basis": "Model, benchmark",
         "fallback_cohort": "benchmark"
       },
       {
         "arm": "null_only",
-        "configuration": "T1 selective thinking (replay)",
+        "configuration": "T1 selective thinking",
         "basis": "Model, fresh",
         "fallback_cohort": "fresh"
       }

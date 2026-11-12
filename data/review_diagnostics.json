@@ -544,7 +544,7 @@
     },
     "selective_vs_thinking": {
       "provenance": {
-        "intervals": "Archived paired intervals conditional on the post hoc replay rule"
+        "intervals": "Archived paired intervals conditional on the post hoc selective-thinking rule evaluated from stored outputs"
       },
       "result": {
         "delta": {
@@ -1326,6 +1326,10 @@
         "R120": {
           "accepted": 54,
           "accepted_pct": 25.83732057416268
+        },
+        "T1_selective": {
+          "accepted": 30,
+          "accepted_pct": 14.354066985645932
         }
       },
       "interpretation": "Accepted links among unresolved queries have no agreed quality reference"
@@ -1370,7 +1374,7 @@
         "level": 95,
         "batch_size": 200,
         "percentile_method": "numpy.nanpercentile default linear interpolation",
-        "selection": "Exploratory; confidence interval conditions on the post hoc replay rule and fixed checkpoints/reference labels",
+        "selection": "Exploratory; confidence interval conditions on the post hoc selective-thinking rule evaluated from stored outputs and fixed checkpoints/reference labels",
         "control": {
           "delta_R_m": 8.06,
           "ci_R_m": [
@@ -1381,7 +1385,7 @@
         }
       },
       "result": {
-        "variant": "T1 selective thinking (replay)",
+        "variant": "T1 selective thinking",
         "base": "T1 bf16, thinking off",
         "n_resolved": 791,
         "n_pos": 434,

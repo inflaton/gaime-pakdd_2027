@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot the selected benchmark operating points from bundled aggregates.
+"""Plot the internal draft's selected benchmark operating points.
 
 Requires Matplotlib. Inputs are bundled aggregates; no production data or
 full-repository imports are needed. Labels identify configurations directly.
@@ -35,7 +35,7 @@ LABELS = {
     "T1_27B": ("27B student, off", (1.14, 84.45), "left"),
     "T1_27B_think": ("27B student, low", (1.1, 94.65), "left"),
     "T1_think": ("T1 bf16, on", (6.25, 95.3), "left"),
-    "cascade": ("T1 selective thinking (replay)", (5.0, 97.15), "center"),
+    "cascade": ("T1 selective thinking", (5.0, 97.15), "center"),
 }
 
 
